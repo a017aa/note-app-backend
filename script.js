@@ -6,7 +6,7 @@ const port = 7777;
 
 app.use(express.json());
 app.listen(7777, '0.0.0.0', () => {
-    console.log("isledi")
+    console.log("isleyir")
 });
 
 const noteSchema = new mongoose.Schema({
@@ -20,8 +20,8 @@ const noteSchema = new mongoose.Schema({
 
 const note = mongoose.model('note', noteSchema);
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB-ə qoşuldu"))
-  .catch((err) => console.log("Xəta:", err));
+  .then(() => console.log("mongodb isleyir"))
+  .catch((err) => console.log("error:", err));
 
 app.post('/api/notes', async (req, res) => {
   try {
@@ -48,7 +48,7 @@ app.get('/api/notes/:id', async (req, res) => {
     const foundNote = await note.findById(id);
 
     if (!foundNote) {
-      res.status(404).json({ error: "Note tapılmadı" });
+      res.status(404).json({ error: "this note doesnt exist" });
     } else {
       res.status(200).json(foundNote);
     }
@@ -63,7 +63,7 @@ app.put('/api/notes/:id', async (req, res) => {
         const updates = req.body;
         const updatedNote = await note.findByIdAndUpdate(id, updates, { new: true });
         if (!updatedNote) {
-            res.status(404).json({ error: "Note tapılmadı" });
+            res.status(404).json({ error: "this note doesnt exist" });
             } else {
             res.status(200).json(updatedNote);
             }
@@ -77,7 +77,7 @@ app.delete('/api/notes/:id', async (req, res) => {
         const id = req.params.id;
         const deletedNote = await note.findByIdAndDelete(id);
         if (!deletedNote) {
-            res.status(404).json({ error: "Note tapılmadı" });
+            res.status(404).json({ error: "this note doesnt exist" });
             } else {
             res.status(200).json(deletedNote);
             }
